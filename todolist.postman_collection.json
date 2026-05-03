@@ -1,0 +1,124 @@
+{
+  "info": {
+    "_postman_id": "todolist-api-collection",
+    "name": "TodoList API",
+    "description": "Collection para a API RESTful de tarefas. Base URL: http://localhost:8030/todolist",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8030/todolist",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Criar Tarefa (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/create",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "create"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Comprar ingredientes para pizza\",\n  \"description\": \"Farinha Caputo 00, fermento seco e tomate pelado\",\n  \"deadline\": \"2026-05-10\",\n  \"priority\": \"ALTO\",\n  \"category\": \"PESSOAL\"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "2. Listar Todas as Tarefas (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/read-all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "read-all"]
+        }
+      }
+    },
+    {
+      "name": "2a. Listar Tarefas com Filtros (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/read-all?completed=false&priority=ALTO&category=PESSOAL&search=pizza",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "read-all"],
+          "query": [
+            { "key": "completed",     "value": "false",      "description": "true | false" },
+            { "key": "createdAtStart","value": "2026-05-01", "description": "ISO date yyyy-MM-dd", "disabled": true },
+            { "key": "createdAtEnd",  "value": "2026-05-31", "description": "ISO date yyyy-MM-dd", "disabled": true },
+            { "key": "deadline",      "value": "2026-05-10", "description": "ISO date yyyy-MM-dd", "disabled": true },
+            { "key": "priority",      "value": "ALTO",       "description": "BAIXO | MEDIO | ALTO" },
+            { "key": "category",      "value": "PESSOAL",   "description": "TRABALHO | ESTUDO | PESSOAL" },
+            { "key": "search",        "value": "pizza",      "description": "texto livre no title ou description" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Buscar Tarefa por ID (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/by-id/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "by-id", "1"]
+        }
+      }
+    },
+    {
+      "name": "4. Atualizar Tarefa (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/update/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "update", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Comprar ingredientes para pizza (atualizado)\",\n  \"description\": \"Farinha Caputo 00, fermento seco, tomate pelado e manjericão fresco\",\n  \"deadline\": \"2026-05-15\",\n  \"priority\": \"MEDIO\",\n  \"category\": \"PESSOAL\"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "5. Alternar Status de Conclusão (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/done/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "done", "1"]
+        }
+      }
+    },
+    {
+      "name": "6. Excluir Tarefa (DELETE)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/delete/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "delete", "1"]
+        }
+      }
+    }
+  ]
+}
