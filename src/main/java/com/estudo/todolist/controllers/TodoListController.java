@@ -1,9 +1,11 @@
 package com.estudo.todolist.controllers;
 
+import com.estudo.todolist.dtos.TodoListAuditDTO;
 import com.estudo.todolist.dtos.TodoListRequestDTO;
 import com.estudo.todolist.dtos.TodoListResponseDTO;
 import com.estudo.todolist.enums.Category;
 import com.estudo.todolist.enums.Priority;
+import com.estudo.todolist.services.TodoListAuditService;
 import com.estudo.todolist.services.TodoListService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,11 @@ import java.util.List;
 public class TodoListController {
 
     private final TodoListService service;
+    private final TodoListAuditService auditService;
 
-    public TodoListController(TodoListService service) {
+    public TodoListController(TodoListService service, TodoListAuditService auditService) {
         this.service = service;
+        this.auditService = auditService;
     }
 
     @PostMapping("/create")
@@ -59,5 +63,15 @@ public class TodoListController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/audit")
+    public ResponseEntity<List<TodoListAuditDTO>> getAuditByTaskId(@PathVariable Long id) {
+        return ResponseEntity.ok(auditService.findAuditByTaskId(id));
+    }
+
+    @GetMapping("/all/audit")
+    public ResponseEntity<List<TodoListAuditDTO>> getAllAudits() {
+        return ResponseEntity.ok(auditService.findAllAudits());
     }
 }

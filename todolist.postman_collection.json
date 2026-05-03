@@ -119,6 +119,30 @@
           "path": ["api", "tasks", "delete", "1"]
         }
       }
+    },
+    {
+      "name": "7. Histórico de Auditoria por ID (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/1/audit",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "1", "audit"]
+        }
+      }
+    },
+    {
+      "name": "8. Todas as Revisões de Auditoria (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/all/audit",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "all", "audit"]
+        }
+      }
     }
   ]
 }

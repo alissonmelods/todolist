@@ -4,6 +4,7 @@ import com.estudo.todolist.enums.Category;
 import com.estudo.todolist.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Audited
 @Entity
 @Table(name = "todolist")
 @EntityListeners(AuditingEntityListener.class)
