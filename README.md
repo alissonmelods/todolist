@@ -16,6 +16,7 @@ API RESTful para gerenciamento de tarefas desenvolvida como projeto de **Engenha
 - [Filtros de Listagem](#filtros-de-listagem)
 - [Auditoria](#auditoria)
 - [Testes](#testes)
+- [Demo e Validação](#demo-e-validação)
 - [Collection Postman](#collection-postman)
 - [Limitações Conhecidas](#limitações-conhecidas)
 - [Próximos Passos](#próximos-passos)
@@ -158,9 +159,9 @@ todolist/
 │   └── test/
 │       └── java/com/estudo/todolist/
 │           ├── controllers/
-│           │   └── TodoListControllerTest.java # @WebMvcTest — 26 testes de integração web
+│           │   └── TodoListControllerTest.java # @WebMvcTest — 25 testes de integração web
 │           └── services/
-│               └── TodoListServiceTest.java    # @ExtendWith(Mockito) — 34 testes de unidade
+│               └── TodoListServiceTest.java    # @ExtendWith(Mockito) — 36 testes de unidade
 ├── todolist.postman_collection.json            # Collection importável no Postman
 └── pom.xml
 ```
@@ -339,7 +340,7 @@ A trilha de auditoria é implementada com **Hibernate Envers** e registra automa
 
 ## Testes
 
-O projeto possui dois níveis de teste, totalizando **60 testes**.
+O projeto possui dois níveis de teste, totalizando **61 testes**.
 
 ### Executar todos os testes
 
@@ -351,7 +352,7 @@ mvn test -P desenv
 
 Localização: `src/test/java/com/estudo/todolist/services/TodoListServiceTest.java`
 
-- **34 testes** cobrindo todos os caminhos da camada de serviço
+- **36 testes** cobrindo todos os caminhos da camada de serviço
 - Utiliza `@ExtendWith(MockitoExtension.class)` — sem contexto Spring, execução rápida
 - Repository mockado com `@Mock`; service instanciado com `@InjectMocks`
 - Asserções com **AssertJ** (`assertThat`)
@@ -360,7 +361,7 @@ Localização: `src/test/java/com/estudo/todolist/services/TodoListServiceTest.j
 | Grupo                  | Testes |
 |------------------------|--------|
 | `create()`             | 4      |
-| `findAll()`            | 6      |
+| `findAll()`            | 8      |
 | `findById()`           | 3      |
 | `update()`             | 4      |
 | `toggleCompleted()`    | 4      |
@@ -371,22 +372,68 @@ Localização: `src/test/java/com/estudo/todolist/services/TodoListServiceTest.j
 
 Localização: `src/test/java/com/estudo/todolist/controllers/TodoListControllerTest.java`
 
-- **26 testes** validando o protocolo HTTP da camada web
+- **25 testes** validando o protocolo HTTP da camada web
 - Utiliza `@WebMvcTest(TodoListController.class)` — carrega apenas a fatia MVC, sem banco
-- Serviços mockados com `@MockBean`
+- Serviços mockados com `@MockitoBean`
 - Requisições via **MockMvc**; asserções de JSON com **jsonPath**
 - Padrão **Given-When-Then** em cada teste
 
 | Endpoint testado        | Testes | Status codes cobertos        |
 |-------------------------|--------|------------------------------|
 | `POST /create`          | 3      | 201                          |
-| `GET /read-all`         | 7      | 200 (lista, vazia, filtros)  |
+| `GET /read-all`         | 8      | 200 (lista, vazia, filtros)  |
 | `GET /by-id/{id}`       | 2      | 200, 404                     |
 | `PUT /update/{id}`      | 2      | 200, 404                     |
 | `PATCH /done/{id}`      | 3      | 200, 404                     |
 | `DELETE /delete/{id}`   | 2      | 204, 404                     |
 | `GET /{id}/audit`       | 3      | 200 (com dados, vazio)       |
 | `GET /all/audit`        | 2      | 200 (com dados, vazio)       |
+
+---
+
+## Demo e Validação
+
+### Endpoints
+
+#### `POST /api/tasks/create` — Criação de tarefa
+
+![Validação do endpoint POST /create](docs/validacao_create.png)
+
+#### `GET /api/tasks/read-all` — Listagem com filtros
+
+![Validação do endpoint GET /read-all](docs/validacao_read-all.png)
+
+#### `GET /api/tasks/by-id/{id}` — Busca por ID
+
+![Validação do endpoint GET /by-id/{id}](docs/validacao_by-id.png)
+
+#### `PUT /api/tasks/update/{id}` — Atualização de tarefa
+
+![Validação do endpoint PUT /update/{id}](docs/validacao_update.png)
+
+#### `PATCH /api/tasks/done/{id}` — Alternar status de conclusão
+
+![Validação do endpoint PATCH /done/{id}](docs/validacao_done.png)
+
+#### `DELETE /api/tasks/delete/{id}` — Exclusão de tarefa
+
+![Validação do endpoint DELETE /delete/{id}](docs/validacao_delete.png)
+
+#### `GET /api/tasks/{id}/audit` — Histórico de auditoria por ID
+
+![Validação do endpoint GET /{id}/audit](docs/validacao_audit-by-id.png)
+
+---
+
+### Testes automatizados
+
+#### `TodoListControllerTest` — 25 testes de integração web
+
+![Resultado da execução de TodoListControllerTest](docs/validacao_teste_TodoListControllerTest.png)
+
+#### `TodoListServiceTest` — 36 testes de unidade
+
+![Resultado da execução de TodoListServiceTest](docs/validacao_teste_TodoListServiceTest.png)
 
 ---
 
@@ -451,4 +498,55 @@ O arquivo `todolist.postman_collection.json` na raiz do projeto contém **8 requ
 
 ---
 
-*Projeto acadêmico — Engenharia de Software com Inteligência Artificial Generativa*
+## Uso da IA durante o desenvolvimento
+
+Todo o código deste projeto foi gerado com o auxílio do **Claude Sonnet 4.6** (Anthropic), acessado via **Claude Code** — a CLI oficial da Anthropic — diretamente no terminal integrado ao IDE.
+
+### Estrutura dos prompts utilizados
+
+Todos os prompts seguiram uma estrutura consistente de cinco elementos:
+
+1. **Papel da IA** — definição explícita do perfil esperado (ex.: "Você é um especialista em Java 17 com Spring e JPA..."), orientando o modelo a adotar o nível técnico adequado.
+2. **Contextualização** — descrição do projeto, tecnologias envolvidas e estado atual do código, para que a IA não precisasse assumir premissas.
+3. **Objetivo** — tarefa a ser executada com exemplos concretos (nomes de endpoints, contratos HTTP, estrutura de pastas).
+4. **Resultado esperado** — comportamento final desejado, validação esperada e fluxo de dados.
+5. **Observações** — restrições, regras de negócio e instrução explícita para perguntar caso houvesse dúvidas, em vez de supor.
+
+### Exemplo de prompt utilizado
+
+O prompt a seguir foi utilizado para gerar toda a camada de endpoints CRUD, DTOs, service e collection Postman:
+
+---
+
+> **Você é um especialista em java 17**, utilizando spring com jpa API RESTfull e banco de dados postgresql, deverá realizar a seguinte tarefa a seguir:
+>
+> **Contexto:** Estamos criando uma API RESTful simples que permite criar, ler, atualizar e excluir tarefas feita no projeto de Engenharia de software com inteligência artificial generativa, este projeto irá utilizar java 17, springboot com jpa e banco postgresql.
+>
+> **Objetivo:** Dentro do projeto `C:\projetos-pos\todolist`, seguindo as boas práticas do jpa e persistência em banco e recursos do spring e as tecnologias do java 17, você deverá criar um DTO para a entidade/classe/tabela `src/main/java/com/estudo/todolist/entities/TodoList.java` (se necessário utilize o record do java 17), e deverá criar um controller para os endpoints que serão criados a seguir, também deverá criar uma classe de service para gerenciar toda a lógica antes de persistir em banco, os endpoints a serem criados são:
+>
+> 1. **Criar Tarefa (Create)** — `POST /api/tasks/create` — corpo com título, descrição, data de entrega, prioridade e categoria — resposta `201 Created`.
+> 2. **Listar Todas as Tarefas (Read)** — `GET /api/tasks/read-all` — filtros opcionais: status de conclusão, intervalo de data de criação, data de entrega, prioridade, categoria e busca por texto no título ou descrição.
+> 3. **Buscar Tarefa por ID (Read)** — `GET /api/tasks/by-id/{id}` — `200 OK` se encontrar, `404 Not Found` se não.
+> 4. **Atualizar Tarefa (Update)** — `PUT /api/tasks/update/{id}` — substitui todos os dados editáveis.
+> 5. **Alternar Status de Conclusão (Partial Update)** — `PATCH /api/tasks/done/{id}` — marca/desmarca como concluída.
+> 6. **Excluir Tarefa (Delete)** — `DELETE /api/tasks/delete/{id}` — resposta `204 No Content`.
+>
+> Todos os códigos de retorno devem ser estruturados e claros seguindo as boas práticas de API. Crie uma collection de todos os endpoints com dados de exemplos para que eu possa copiar e colar no Postman para testar.
+>
+> **Resultado esperado:** todos os endpoints funcionando corretamente, onde o fluxo é — chamar o endpoint, comunicar com o service e persistir a informação em banco ou retornar a informação conforme o filtro aplicado. Caso as pastas/estruturas para o novo controller e service não existam você deve criar.
+>
+> **Observações:** Caso tenha alguma dúvida, não suponha o que deve ser feito — pergunte.
+
+---
+
+### Correções assistidas pela IA
+
+Além da geração de código, a IA foi utilizada para diagnosticar e corrigir dois problemas identificados durante a execução dos testes:
+
+1. **Erro no fluxo de criação de tarefa** — após a troca dos valores dos enums (`Priority` e `Category`) para português, o banco rejeitava inserções com violação de constraint CHECK. A IA identificou que o `ddl-auto=update` não recria constraints existentes e orientou a solução (recriar a tabela em ambiente de desenvolvimento).
+
+2. **`TodoListControllerTest` não executava** — a suíte de testes do controller falhava ao iniciar por quatro incompatibilidades com o Spring Boot 4.0: o `JAVA_HOME` local apontava para Java 8; `@WebMvcTest`, `@MockBean` e `ObjectMapper` pertenciam a pacotes renomeados ou removidos nessa versão; e `@EnableJpaAuditing` na classe principal causava falha no contexto do slice de testes. A IA mapeou todas as mudanças e aplicou as correções necessárias.
+
+---
+
+*Projeto acadêmico UFG — Engenharia de Software com Inteligência Artificial Generativa*
