@@ -10,6 +10,7 @@ API RESTful para gerenciamento de tarefas desenvolvida como projeto de **Engenha
 - [Pré-requisitos](#pré-requisitos)
 - [Instalação](#instalação)
 - [Execução](#execução)
+- [Makefile](#makefile)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Arquitetura](#arquitetura)
 - [Endpoints](#endpoints)
@@ -126,6 +127,31 @@ Resposta esperada:
 ```
 
 > O Hibernate cria e atualiza as tabelas automaticamente (`ddl-auto=update`). Na **primeira execução** serão criadas as tabelas `todolist`, `todolist_audit` e `revinfo`.
+
+---
+
+## Makefile
+
+O projeto inclui um `Makefile` na raiz para simplificar os comandos mais comuns. Requer `make` instalado — disponível nativamente em Linux e macOS; no Windows, utilize Git Bash ou WSL.
+
+| Target            | Comando equivalente                                        | Descrição                                  |
+|-------------------|------------------------------------------------------------|--------------------------------------------|
+| `make install`    | `./mvnw dependency:resolve`                                | Baixa todas as dependências do projeto     |
+| `make run`        | `./mvnw spring-boot:run -P desenv`                         | Inicia a aplicação na porta 8030           |
+| `make test`       | `./mvnw test`                                              | Executa todos os 61 testes                 |
+| `make test-service`    | `./mvnw test -Dtest="TodoListServiceTest"`            | Executa apenas os 36 testes de unidade     |
+| `make test-controller` | `./mvnw test -Dtest="TodoListControllerTest"`         | Executa apenas os 25 testes de integração  |
+| `make package`    | `./mvnw clean package -P desenv -DskipTests`               | Gera o JAR em `target/`                    |
+
+**Exemplo de uso:**
+
+```bash
+make install   # baixa as dependências
+make run       # sobe a API
+make test      # roda todos os testes
+```
+
+Executar `make` sem argumentos exibe a lista de targets disponíveis.
 
 ---
 
