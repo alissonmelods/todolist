@@ -71,4 +71,18 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>desenv</id>
+			<properties>
+				<spring.datasource.url>jdbc:postgresql://localhost:5432/todolist</spring.datasource.url>
+				<spring.datasource.username></spring.datasource.username>
+				<spring.datasource.password></spring.datasource.password>
+				<server.port>8030</server.port>
+				<server.context>todolist</server.context>
+			</properties>
+		</profile>
+	</profiles>
+
+
 </project>
